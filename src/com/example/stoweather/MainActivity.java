@@ -9,7 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -19,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.stoweather.data.CityWeather;
 import com.example.stoweather.tasks.WeatherDataTask;
@@ -33,32 +32,50 @@ public class MainActivity extends Activity {
 	private WeatherDataTask weatherTask = null;
     private ListView list;
 
+    
+    private static final int UPDATE_UI = 2;
+
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        // Start the location thread.
-        uiHandler = new Handler(Looper.getMainLooper());
-        getLocation  = new Runnable() {					
-			@Override
-			public void run() {
-				mGeoServiceManager = new GeoServiceManager(getApplicationContext(),MainActivity.this);	
-			}
-		};
-		uiHandler.post(getLocation);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
     }
 
-    
+    @Override
+    protected void onStart() {
+    	// TODO Auto-generated method stub
+    	super.onStart();
+    	  // Start the location thread.
+    	getLocation  = new Runnable() {					
+			@Override
+			public void run() {
+				mGeoServiceManager = new GeoServiceManager(getApplicationContext(),MainActivity.this,uiHandler);	
+			}
+		};
+		
+	    // Handler for updating text fields on the UI like the lat/long and address.
+		uiHandler = new Handler() {
+          public void handleMessage(Message msg) {
+              switch (msg.what) {
+                  case UPDATE_UI:
+                  	getWeatherData((Double[]) msg.obj);
+                      break;
+              }
+          }
+      };
+		uiHandler.post(getLocation);
+    }
     /**
      * Gets the current weather data based on users location.
      * @param lat
      * @param longitude
      */
-    public void getWeatherData(double lat, double longitude){
+    public void getWeatherData(Double[] coords){
+    
     	weatherTask = new WeatherDataTask();
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     	int radius = Constants.AREA_RADIUS_KM;
@@ -67,12 +84,13 @@ public class MainActivity extends Activity {
     		String sRadius = prefs.getString("radius_area_value", Constants.AREA_RADIUS_KM + "");
     		radius = Integer.parseInt(sRadius);
     		}
-    	Double params[] = {lat,longitude,(double)radius};
+    	Double params[] = {coords[0],coords[1],(double)radius};
     	
     	// Create async task to fetch weather info.
     	List<CityWeather> cityList = null;
     	try {
-			cityList = weatherTask.execute(params).get();
+    		weatherTask.execute(params);
+			cityList = weatherTask.get();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {

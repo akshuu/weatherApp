@@ -11,6 +11,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -30,12 +32,15 @@ public class GeoServiceManager {
 	private Location mNotYetGeoDecodedLocation = null;
 	private Activity mActivity;
 	private Context mContext;
+	private Handler mHandler;
+	private static final int UPDATE_UI = 2;
 	
-	public GeoServiceManager(Context context,Activity mAct) {
+	public GeoServiceManager(Context context,Activity mAct, Handler uiHandler) {
 		mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 		mGeoCoder = new Geocoder(context);
 		this.mContext = context;
 		this.mActivity = mAct;
+		mHandler = uiHandler;
 		
 		try {
 			// Register the listener with the Location Manager to receive location updates
@@ -99,8 +104,12 @@ public class GeoServiceManager {
 	}
 	
 	public void updateGridView(){
-	 if(mCurrentAddress != null)	((MainActivity)mActivity).getWeatherData(mCurrentAddress.getLatitude(),
-				mCurrentAddress.getLongitude());
+	 if(mCurrentAddress != null){
+		Toast.makeText(mActivity.getApplicationContext(), "Fetching weather information...", Toast.LENGTH_SHORT).show();
+		 Message.obtain(mHandler,
+	                UPDATE_UI,
+	                new Double[]{mCurrentAddress.getLatitude() , mCurrentAddress.getLongitude()}).sendToTarget();
+	 }
 	}
 	
 

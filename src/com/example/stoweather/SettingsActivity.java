@@ -20,12 +20,6 @@ public class SettingsActivity extends PreferenceActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        Log.i(Constants.LOG_TAG,"Pref Radius key == " + prefs.contains("pref_radius"));
-        Log.i(Constants.LOG_TAG,"Pref Temp key == " + prefs.contains(KEY_PREF_TEMPERATURE));
-        Log.i(Constants.LOG_TAG,"Pref Temp key == " + prefs.getString(KEY_RADIUS_AREA_VALUE,"30"));
-        Log.i(Constants.LOG_TAG,"Pref Temp key == " + prefs.getBoolean(KEY_PREF_TEMPERATURE,false));
     }
 
 	@SuppressWarnings("deprecation")
