@@ -30,10 +30,12 @@ public class GeoServiceManager {
 	private Geocoder mGeoCoder = null;
 	private Address mCurrentAddress = null;
 	private Location mNotYetGeoDecodedLocation = null;
+	
 	private Activity mActivity;
 	private Context mContext;
 	private Handler mHandler;
 	private static final int UPDATE_UI = 2;
+	private Location mOldLocation = null;
 	
 	public GeoServiceManager(Context context,Activity mAct, Handler uiHandler) {
 		mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -84,6 +86,7 @@ public class GeoServiceManager {
 				}
 				
 				//Successfully decoded, set the place holder to null
+				
 				mNotYetGeoDecodedLocation = null;
 			}
 			catch (IllegalArgumentException exception) {
@@ -100,7 +103,7 @@ public class GeoServiceManager {
 	
 	public Address getCurrentAddress() {
 		geoDecodeLocation();
-		return mCurrentAddress;
+		return mCurrentAddress; 
 	}
 	
 	public void updateGridView(){
@@ -115,10 +118,16 @@ public class GeoServiceManager {
 
 	// Define a listener that responds to location updates
     LocationListener mLocationListener = new LocationListener() {
-
+    	
     	// Called when a new location is found by the network location provider.
     	public void onLocationChanged(Location location) {
+    		if(mOldLocation!= null)
+    			if((location.getTime() - mOldLocation.getTime()) < 2*60*1000){		// Ignore minor updates less than 2 minutes
+    				Log.i(Constants.LOG_TAG, "GeoServiceManager:ignoring this update " + location.getTime());
+    				return;
+    			}
     		Log.i(Constants.LOG_TAG, "GeoServiceManager: Received a location update!");
+    		mOldLocation = location;
     		mNotYetGeoDecodedLocation = location;
     		geoDecodeLocation();
     		updateGridView();
