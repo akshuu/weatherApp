@@ -12,9 +12,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
@@ -31,18 +34,13 @@ public class MainActivity extends Activity {
 	private GeoServiceManager mGeoServiceManager;
 	private WeatherDataTask weatherTask = null;
     private ListView list;
-
-    
     private static final int UPDATE_UI = 2;
 
-	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-		
     }
 
     @Override
@@ -79,9 +77,9 @@ public class MainActivity extends Activity {
     	weatherTask = new WeatherDataTask();
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     	int radius = Constants.AREA_RADIUS_KM;
-    	if(prefs.contains("radius_area_value"))
+    	if(prefs.contains(Constants.KEY_RADIUS_AREA_VALUE))
     		{
-    		String sRadius = prefs.getString("radius_area_value", Constants.AREA_RADIUS_KM + "");
+    		String sRadius = prefs.getString(Constants.KEY_RADIUS_AREA_VALUE, Constants.AREA_RADIUS_KM + "");
     		radius = Integer.parseInt(sRadius);
     		}
     	Double params[] = {coords[0],coords[1],(double)radius};
@@ -98,33 +96,31 @@ public class MainActivity extends Activity {
 		}finally{
 			weatherTask = null;
 		}
-
+    	
     	if(cityList != null){
-    	/*
-         * Updating parsed JSON data into ListView
-         */
-    		List<CityWeather> cityAdapter = new ArrayList<CityWeather>(cityList);
-       
-    		list=(ListView)findViewById(R.id.list);
-    		final ListAdapter adapter = new WeatherDataAdapter(this, cityAdapter);
-    		
-    		list.setAdapter(adapter);
-    		
-            // Launching new screen on Selecting Single ListItem
-    		list.setOnItemClickListener(new OnItemClickListener() {
-     
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                        int position, long id) {
-                    // Starting new intent
-                    Intent in = new Intent(getApplicationContext(), CityWeatherList.class);
-                    in.putExtra("City", (CityWeather)adapter.getItem(position));
-                    startActivity(in);
-                }
-            });
-    	}
+        	/*
+             * Updating parsed JSON data into ListView
+             */
+        		List<CityWeather> cityAdapter = new ArrayList<CityWeather>(cityList);
+           
+        		list=(ListView)findViewById(R.id.list);
+        		final ListAdapter adapter = new WeatherDataAdapter(this, cityAdapter);
+        		
+        		list.setAdapter(adapter);
+                // Launching new screen on Selecting Single ListItem
+        		list.setOnItemClickListener(new OnItemClickListener() {
+         
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+                        // Starting new intent
+                        Intent in = new Intent(getApplicationContext(), CityWeatherList.class);
+                        in.putExtra("City", (CityWeather)adapter.getItem(position));
+                        startActivity(in);
+                    }
+                });
+        	}
     }
-    
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
