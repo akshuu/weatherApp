@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            <TextView
+               android:id="@+id/txtCityTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:textStyle="bold"
+               android:textSize="17dip"
+               android:layout_marginLeft="10dp"
+               />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+             <TextView
+               android:id="@+id/txtDate"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:textSize="15dip"
+               android:layout_marginLeft="10dp"
+               />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+              <TextView
+               android:id="@+id/txtUpdatedTimeTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:textSize="15dip"
+               android:layout_marginLeft="10dp"
+               />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp" 
+            android:layout_marginTop="20dp" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="100dp" >
+
+                <TextView
+                    android:id="@+id/txtTempTxt"
+                    android:layout_width="200dp"
+                    android:layout_height="100dp"
+                    android:text="T"
+                    android:textSize="24dip"
+                    android:textStyle="bold" />
+                 
+             <TextView
+                android:id="@+id/txtTempLowTxt"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:text="@string/txtLow"
+                android:layout_marginLeft="10dp"
+                android:textSize="15dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTempHighTxt"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/txtHigh"
+                android:textSize="15dip"
+                android:textStyle="bold" />
+			</RelativeLayout>
+
+           <!--  <TextView
+                android:id="@+id/txtTempLowTxt1"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:text="min"
+                android:textSize="15dip" />
+
+            <TextView
+                android:id="@+id/txtTempHighTxt1"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:text="high"
+                android:textSize="15dip" />
+			 -->
+
+			</TableRow>
+
+        
+			
+            <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+                   
+                 <TextView
+               android:id="@+id/txtWeatherStatusTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="15dip"
+               android:textStyle="bold" 
+               android:layout_marginLeft="10dp"
+               />
+                 
+                  <ImageView
+                android:id="@+id/imgWeather"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:layout_gravity="right|end" />
+           </TableRow>
+         
+            <TableRow
+            android:id="@+id/tableRow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+                  
+                <TextView
+               android:id="@+id/txtWindInfo"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="18dip"
+               android:textStyle="bold"
+               android:text="@string/windinfo"
+               />
+           </TableRow>
+           
+              <TableRow
+            android:id="@+id/tableRow7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+                  
+                <TextView
+               android:id="@+id/txtWindSpeed"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="15dip"
+               android:textStyle="bold"
+               android:text="@string/speed"
+               />
+                
+                 <TextView
+               android:id="@+id/txtWindSpeedTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="15dip"
+               />
+                 
+           </TableRow>
+           
+              <!-- 
+                <TableRow
+            android:id="@+id/tableRow8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+                  
+                <TextView
+               android:id="@+id/txtWindDir"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="15dip"
+               android:text="@string/direction"
+               />
+                
+                 <TextView
+               android:id="@+id/txtWindDirTxt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:textSize="15dip"
+               />
+                 
+           </TableRow> -->
+           
+    </TableLayout>
+
+</LinearLayout>
