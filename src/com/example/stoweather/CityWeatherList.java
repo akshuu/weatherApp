@@ -8,8 +8,10 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.MonthDisplayHelper;
 import android.widget.ImageView;
@@ -58,11 +60,24 @@ public class CityWeatherList extends Activity {
 		txtDate.setText(dayStr);
 		ImageView weatherimage = (ImageView) findViewById(R.id.imgWeather);
 		
+		 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		 boolean useMetric = true;
+		 if(prefs.contains(Constants.KEY_PREF_TEMPERATURE))
+        	useMetric = prefs.getBoolean(Constants.KEY_PREF_TEMPERATURE, true);
+       
 		txtCity.setText(city.getName());
+
 		txtTemp.setText(Helper.getTemperatureInCelsius(city.getTemperature().getTemp()) +" " + getString(R.string.degCelcius));
 		txtTemp.setTypeface(null, Typeface.BOLD);
-		txtTempMin.setText(getString(R.string.txtLow) + " " + Helper.getTemperatureInCelsius(city.getTemperature().getTemp_min()) +" " + getString(R.string.degCelcius));
-		txtTempMax.setText(getString(R.string.txtHigh) + " " +Helper.getTemperatureInCelsius(city.getTemperature().getTemp_max()) +" " + getString(R.string.degCelcius));
+		if(useMetric){
+			txtTemp.setText(Helper.getTemperatureInCelsius(city.getTemperature().getTemp()) +" " + getString(R.string.degCelcius));
+			txtTempMin.setText(getString(R.string.txtLow) + " " + Helper.getTemperatureInCelsius(city.getTemperature().getTemp_min()) +" " + getString(R.string.degCelcius));
+			txtTempMax.setText(getString(R.string.txtHigh) + " " +Helper.getTemperatureInCelsius(city.getTemperature().getTemp_max()) +" " + getString(R.string.degCelcius));
+		}else{
+			txtTemp.setText(Helper.getTemperatureInFarhenhite(city.getTemperature().getTemp()) +" " + getString(R.string.degFarhenheit));
+			txtTempMin.setText(getString(R.string.txtLow) + " " + Helper.getTemperatureInFarhenhite(city.getTemperature().getTemp_min()) +" " + getString(R.string.degFarhenheit));
+			txtTempMax.setText(getString(R.string.txtHigh) + " " +Helper.getTemperatureInFarhenhite(city.getTemperature().getTemp_max()) +" " + getString(R.string.degFarhenheit));
+		}
 		txtWeatherStatus.setText(city.getWeatherInfo().get(0).getDescription());
         String icon = city.getWeatherInfo().get(0).getIcon();
 		icon = "i"+icon; 
