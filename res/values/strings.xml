@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">StoWeather</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Weather</string>
+ 	<string name="degCelcius">\u2103</string>
+ 	<string name="degFarhenheit">\u2109</string>
+</resources>
