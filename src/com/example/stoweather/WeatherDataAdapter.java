@@ -7,7 +7,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.stoweather.data.CityWeather;
+import com.example.stoweather.utils.Constants;
 import com.example.stoweather.utils.Helper;
 
 /**
@@ -77,7 +79,15 @@ public class WeatherDataAdapter extends BaseAdapter {
  
         // Setting all values in listview
         cityname.setText(city.getName());
-        temperature.setText(Helper.getTemperatureInCelsius(city.getTemperature().getTemp()) +" " + activity.getString(R.string.degCelcius));
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        boolean useMetric = true;
+        if(prefs.contains(Constants.KEY_PREF_TEMPERATURE))
+        	useMetric = prefs.getBoolean(Constants.KEY_PREF_TEMPERATURE, true);
+       
+        if(useMetric)
+        	temperature.setText(Helper.getTemperatureInCelsius(city.getTemperature().getTemp()) +" " + activity.getString(R.string.degCelcius));
+        else 
+        	temperature.setText(Helper.getTemperatureInFarhenhite(city.getTemperature().getTemp()) +" " + activity.getString(R.string.degFarhenheit));
         String icon = city.getWeatherInfo().get(0).getIcon();
 		icon = "i"+icon; 
 		int r = activity.getResources().getIdentifier(icon,"drawable",activity.getPackageName());
