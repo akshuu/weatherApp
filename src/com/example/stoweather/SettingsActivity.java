@@ -13,8 +13,6 @@ import com.example.stoweather.utils.Constants;
 public class SettingsActivity extends PreferenceActivity
 			implements OnSharedPreferenceChangeListener{
     
-	public static final String KEY_PREF_TEMPERATURE = "pref_temp";
-	public static final String KEY_RADIUS_AREA_VALUE = "radius_area_value";
 
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +40,7 @@ public class SettingsActivity extends PreferenceActivity
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		 if(KEY_RADIUS_AREA_VALUE.equals(key)){
+		 if(Constants.KEY_RADIUS_AREA_VALUE.equals(key)){
 			 
 		 }
 	}
