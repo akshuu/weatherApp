@@ -3,6 +3,7 @@
  */
 package com.example.stoweather.utils;
 
+
 /**
  * @author akshatj
  *
@@ -19,5 +20,9 @@ public class Constants {
 	public static final String TAG_STATUS = "status";
 	public static final String TAG_ICON = "icon";
 	
+	public enum DAYS {SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THRUSDAY,FRIDAY,SATURDAY}	
+	
 	public static final String WEATHER_CITY_URL = "http://api.openweathermap.org/data/2.1/find/city?lat=%f&lon=%f&cnt=%d"; 
 }
+
+

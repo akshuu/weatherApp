@@ -1,9 +1,15 @@
 
 package com.example.stoweather.data;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class Temperature{
+public class Temperature implements Serializable{
+	
+	
+ 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
    	private float humidity;
    	private float pressure;
    	private float temp;

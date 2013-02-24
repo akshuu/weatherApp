@@ -1,17 +1,14 @@
 package com.example.stoweather;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
-import android.content.res.AssetManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,8 +19,6 @@ import android.widget.TextView;
 
 import com.example.stoweather.data.CityWeather;
 import com.example.stoweather.tasks.WeatherDataTask;
-import com.example.stoweather.utils.Constants;
-import com.example.stoweather.utils.Helper;
 
 public class MainActivity extends Activity {
 
@@ -71,25 +66,13 @@ public class MainActivity extends Activity {
     	/**
          * Updating parsed JSON data into ListView
          * */
-    		List<HashMap<String, String>> cityAdapter = new ArrayList<HashMap<String, String>>();
-    		for(CityWeather city:cityList){
-    			HashMap<String, String> cityMap = new HashMap<String, String>();
-    			cityMap.put(Constants.TAG_NAME, city.getName());
-    			cityMap.put(Constants.TAG_TEMP, Helper.getTemperatureInCelsius(city.getTemperature().getTemp())+"");
-    			cityMap.put(Constants.TAG_STATUS, city.getWeatherInfo().get(0).getDescription());
-    			String icon = city.getWeatherInfo().get(0).getIcon();
-    			icon = "i"+icon; 
-    	        cityMap.put(Constants.TAG_ICON, icon);
-    	        
-    			cityAdapter.add(cityMap);
-    		}
+    		List<CityWeather> cityAdapter = new ArrayList<CityWeather>(cityList);
        
     		list=(ListView)findViewById(R.id.list);
-    		ListAdapter adapter = new WeatherDataAdapter(this, cityAdapter);
+    		final ListAdapter adapter = new WeatherDataAdapter(this, cityAdapter);
     		
     		list.setAdapter(adapter);
     		
-    		 // selecting single ListView item
             // Launching new screen on Selecting Single ListItem
     		list.setOnItemClickListener(new OnItemClickListener() {
      
@@ -102,11 +85,11 @@ public class MainActivity extends Activity {
 //                    String description = ((TextView) view.findViewById(R.id.weatherState)).getText().toString();
      
                     // Starting new intent
-                    //Intent in = new Intent(getApplicationContext(), SingleMenuItemActivity.class);
-                    //in.putExtra(TAG_NAME, name);
+                    Intent in = new Intent(getApplicationContext(), CityWeatherList.class);
+                    in.putExtra("City", (CityWeather)adapter.getItem(position));
                     //in.putExtra(TAG_EMAIL, cost);
                     //in.putExtra(TAG_PHONE_MOBILE, description);
-                    //startActivity(in);
+                    startActivity(in);
                 }
             });
     	}

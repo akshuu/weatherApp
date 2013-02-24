@@ -6,4 +6,12 @@
     <string name="title_activity_main">Weather</string>
  	<string name="degCelcius">\u2103</string>
  	<string name="degFarhenheit">\u2109</string>
+ 	<string name="txtHigh">H: </string>
+ 	<string name="txtLow">L: </string>
+ 	<string name="windinfo">Wind Info</string>
+ 	<string name="speed">Wind Speed: </string>
+ 	<string name="speedmps">m/s</string>
+ 	<string name="direction">Wind Direction: </string>
+ 	<string name="humidity">Humidity</string>
+ 	<string name="Pressure">Pressure</string>
 </resources>

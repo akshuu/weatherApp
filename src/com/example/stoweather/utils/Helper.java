@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -114,7 +115,11 @@ public class Helper {
      * @return
      */
 	public static float getTemperatureInCelsius(float temp) {
-		return temp - 273.15f;
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setMaximumFractionDigits(2);
+		temp = temp - 273.15f;
+		temp = Float.parseFloat(format.format(temp));
+		return temp;
 	}
 
 	/**
@@ -123,7 +128,11 @@ public class Helper {
 	 * @return
 	 */
 	public static  float getTemperatureInFarhenhite(float temp) {
-		return temp - 457.87f;
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setMaximumFractionDigits(2);
+		temp = temp - 457.87f;
+		temp = Float.parseFloat(format.format(temp));
+		return temp ;
 	}
 
 	/**

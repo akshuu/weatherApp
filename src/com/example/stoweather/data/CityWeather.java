@@ -1,9 +1,17 @@
 
 package com.example.stoweather.data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CityWeather{
+public class CityWeather implements Serializable{
+	
+	
+ 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
    	private CloudInfo clouds;
    	private CoordInfo coord;
    	private Number distance;

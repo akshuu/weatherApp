@@ -1,9 +1,15 @@
 
 package com.example.stoweather.data;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class CloudInfo{
+public class CloudInfo implements Serializable{
+	
+	
+ 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
    	private float all;
 
  	public float getAll(){

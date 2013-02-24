@@ -1,10 +1,18 @@
 
 package com.example.stoweather.data;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class WeatherData{
- 	private String calctime;
+public class WeatherData implements Serializable{
+	
+	
+ 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private String calctime;
    	private int cnt;
    	private String cod;
    	public String getCalctime() {
