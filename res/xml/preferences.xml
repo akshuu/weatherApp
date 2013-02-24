@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory 
+        android:title="@string/pref_radius_category"
+        android:key="pref_radius_key">
+    <EditTextPreference
+        android:key="radius_area_value"
+        android:title="@string/pref_radius"
+        android:defaultValue="10"
+        android:summary="@string/pref_radius_summ"
+         />
+    
+	    <!-- opens another nested subscreen
+	    <PreferenceScreen
+	            android:key="radius_area_value"
+	            android:title="@string/radius_limit"
+	            android:persistent="true">
+	    </PreferenceScreen> -->
+    </PreferenceCategory>
+    
+    <PreferenceCategory 
+        android:title="@string/pref_temp_title"
+        android:key="pref_key_temp">
+    <CheckBoxPreference
+        android:key="pref_temp"
+        android:title="@string/pref_temp"
+        android:summary="@string/pref_temp_summ"
+        android:defaultValue="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -22,7 +22,7 @@ public class Constants {
 	
 	public enum DAYS {SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THRUSDAY,FRIDAY,SATURDAY}	
 	
-	public static final String WEATHER_CITY_URL = "http://api.openweathermap.org/data/2.1/find/city?lat=%f&lon=%f&cnt=%d"; 
+	public static final String WEATHER_CITY_URL = "http://api.openweathermap.org/data/2.1/find/city?lat=%f&lon=%f&radius=%d"; 
 }
 
 

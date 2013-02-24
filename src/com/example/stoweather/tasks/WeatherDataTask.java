@@ -26,7 +26,8 @@ public class WeatherDataTask extends AsyncTask<Double, Void, List<CityWeather>> 
 		WeatherData data = new WeatherData();
 		double lat = params[0];
 		double longitude = params[1];
-		String cityURL = String.format(Constants.WEATHER_CITY_URL, lat,longitude,Constants.RECORDS_COUNT);
+		double radius = params[2];
+		String cityURL = String.format(Constants.WEATHER_CITY_URL, lat,longitude,(int)radius);
     	Log.d(Constants.LOG_TAG, "URL == " + cityURL);
     	String strJson = null;
     	try {

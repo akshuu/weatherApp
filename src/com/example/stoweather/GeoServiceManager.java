@@ -41,7 +41,10 @@ public class GeoServiceManager {
 			// Register the listener with the Location Manager to receive location updates
 			mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, Constants.MIN_TIME_FOR_GEO_UPDATES, 
 													Constants.MIN_DISTANCE_FOR_GEO_UPDATES, mLocationListener);
-			mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.MIN_TIME_FOR_GEO_UPDATES, 
+			boolean gpsEnabled = mLocationManager
+					  .isProviderEnabled(LocationManager.GPS_PROVIDER);
+			if(gpsEnabled)
+				mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constants.MIN_TIME_FOR_GEO_UPDATES, 
 					Constants.MIN_DISTANCE_FOR_GEO_UPDATES, mLocationListener);
 		}
 		catch(IllegalArgumentException exception) {
@@ -58,6 +61,9 @@ public class GeoServiceManager {
 	public void stop(){
 		if(mLocationManager != null)
 			mLocationManager.removeUpdates(mLocationListener);
+	}
+	
+	public void refresh(){
 	}
 	/**
 	 * Geo decode the current not yet decoded location

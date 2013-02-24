@@ -6,10 +6,14 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -19,12 +23,15 @@ import android.widget.TextView;
 
 import com.example.stoweather.data.CityWeather;
 import com.example.stoweather.tasks.WeatherDataTask;
+import com.example.stoweather.utils.Constants;
 
 public class MainActivity extends Activity {
 
 	private Handler uiHandler;
 	private Runnable getLocation;
 	private GeoServiceManager mGeoServiceManager;
+	private WeatherDataTask weatherTask = null;
+    private ListView list;
 
 	
     @Override
@@ -41,16 +48,28 @@ public class MainActivity extends Activity {
 			}
 		};
 		uiHandler.post(getLocation);
-		
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
     }
 
-    WeatherDataTask weatherTask = null;
-    ListView list;
     
+    /**
+     * Gets the current weather data based on users location.
+     * @param lat
+     * @param longitude
+     */
     public void getWeatherData(double lat, double longitude){
     	weatherTask = new WeatherDataTask();
-    	Double params[] = {lat,longitude};
+    	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+    	int radius = Constants.AREA_RADIUS_KM;
+    	if(prefs.contains("radius_area_value"))
+    		{
+    		String sRadius = prefs.getString("radius_area_value", Constants.AREA_RADIUS_KM + "");
+    		radius = Integer.parseInt(sRadius);
+    		}
+    	Double params[] = {lat,longitude,(double)radius};
+    	
+    	// Create async task to fetch weather info.
     	List<CityWeather> cityList = null;
     	try {
 			cityList = weatherTask.execute(params).get();
@@ -63,9 +82,9 @@ public class MainActivity extends Activity {
 		}
 
     	if(cityList != null){
-    	/**
+    	/*
          * Updating parsed JSON data into ListView
-         * */
+         */
     		List<CityWeather> cityAdapter = new ArrayList<CityWeather>(cityList);
        
     		list=(ListView)findViewById(R.id.list);
@@ -79,21 +98,16 @@ public class MainActivity extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                         int position, long id) {
-                    // getting values from selected ListItem
-                    String name = ((TextView) view.findViewById(R.id.cityname)).getText().toString();
-                    String temperature = ((TextView) view.findViewById(R.id.temperature)).getText().toString();
-//                    String description = ((TextView) view.findViewById(R.id.weatherState)).getText().toString();
-     
                     // Starting new intent
                     Intent in = new Intent(getApplicationContext(), CityWeatherList.class);
                     in.putExtra("City", (CityWeather)adapter.getItem(position));
-                    //in.putExtra(TAG_EMAIL, cost);
-                    //in.putExtra(TAG_PHONE_MOBILE, description);
                     startActivity(in);
                 }
             });
     	}
     }
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -101,11 +115,42 @@ public class MainActivity extends Activity {
     }
     
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	if(item.getTitle().equals(getString(R.string.menu_settings)))
+    		updatePreferences();
+    	else if((item.getTitle().equals(getString(R.string.menu_refresh)))){
+    		refreshLocation();
+    	}
+    	return true;
+    }
+    
+	/**
+	 * Refresh location when asked by user
+	 */
+	void refreshLocation() {
+		Log.i(Constants.LOG_TAG,"Refreshing the location...." );
+		uiHandler.post(getLocation);
+	}
+	
+	/**
+	 * Show the preferences screen
+	 */
+    private void updatePreferences() {
+    	 Intent settingsActivity = new Intent(getBaseContext(),
+                 SettingsActivity.class);
+         startActivity(settingsActivity);		
+	}
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	
+    }
+	@Override
     protected void onPause() {
-    	// TODO Auto-generated method stub
+		super.onPause();
     	mGeoServiceManager.stop();
     	if(weatherTask != null)
     		weatherTask.cancel(true);
-    	super.onPause();
     }
 }
