@@ -21,6 +21,11 @@ public class Constants {
 	
 	public enum DAYS {SUNDAY,MONDAY,TUESDAY,WEDNESDAY,THRUSDAY,FRIDAY,SATURDAY}	
 	
+	//Preferences Keys
+	public static final String KEY_PREF_TEMPERATURE = "pref_temp";
+	public static final String KEY_RADIUS_AREA_VALUE = "radius_area_value";
+
+	
 	public static final String WEATHER_CITY_URL = "http://api.openweathermap.org/data/2.1/find/city?lat=%f&lon=%f&radius=%d"; 
 }
 

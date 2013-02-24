@@ -116,7 +116,7 @@ public class Helper {
      */
 	public static float getTemperatureInCelsius(float temp) {
 		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMaximumFractionDigits(2);
+		format.setMaximumFractionDigits(1);
 		temp = temp - 273.15f;
 		temp = Float.parseFloat(format.format(temp));
 		return temp;
@@ -129,8 +129,8 @@ public class Helper {
 	 */
 	public static  float getTemperatureInFarhenhite(float temp) {
 		NumberFormat format = NumberFormat.getNumberInstance();
-		format.setMaximumFractionDigits(2);
-		temp = temp - 457.87f;
+		format.setMaximumFractionDigits(1);
+		temp = (temp - 273.15f)*1.8f + 32;
 		temp = Float.parseFloat(format.format(temp));
 		return temp ;
 	}
