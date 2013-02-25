@@ -35,37 +35,38 @@ public class MainActivity extends Activity {
 	private WeatherDataTask weatherTask = null;
     private ListView list;
     private static final int UPDATE_UI = 2;
-
+    private double latitude = 0d;
+    private double longitude = 0d;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-    }
 
-    @Override
-    protected void onStart() {
-    	// TODO Auto-generated method stub
-    	super.onStart();
-    	  // Start the location thread.
-    	getLocation  = new Runnable() {					
-			@Override
-			public void run() {
-				mGeoServiceManager = new GeoServiceManager(getApplicationContext(),MainActivity.this,uiHandler);	
-			}
-		};
-		
-	    // Handler for updating text fields on the UI like the lat/long and address.
-		uiHandler = new Handler() {
-          public void handleMessage(Message msg) {
-              switch (msg.what) {
-                  case UPDATE_UI:
-                  	getWeatherData((Double[]) msg.obj);
-                      break;
-              }
-          }
-      };
+		if(latitude == 0 && longitude == 0)
+		{
+			// Start the location thread.
+	    	getLocation  = new Runnable() {					
+				@Override
+				public void run() {
+					mGeoServiceManager = new GeoServiceManager(getApplicationContext(),MainActivity.this,uiHandler);	
+				}
+			};
+			
+		    // Handler for updating text fields on the UI like the lat/long and address.
+			uiHandler = new Handler() {
+	          public void handleMessage(Message msg) {
+	              switch (msg.what) {
+	                  case UPDATE_UI:
+	                  	getWeatherData((Double[]) msg.obj);
+	                      break;
+	              }
+	          }
+	      };
+	      
 		uiHandler.post(getLocation);
+		}
     }
     /**
      * Gets the current weather data based on users location.
@@ -82,6 +83,9 @@ public class MainActivity extends Activity {
     		String sRadius = prefs.getString(Constants.KEY_RADIUS_AREA_VALUE, Constants.AREA_RADIUS_KM + "");
     		radius = Integer.parseInt(sRadius);
     		}
+    	latitude = coords[0];
+    	longitude = coords[1];
+    	
     	Double params[] = {coords[0],coords[1],(double)radius};
     	
     	// Create async task to fetch weather info.
@@ -94,6 +98,7 @@ public class MainActivity extends Activity {
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}finally{
+			weatherTask.cancel(false);
 			weatherTask = null;
 		}
     	
@@ -167,4 +172,19 @@ public class MainActivity extends Activity {
     	if(weatherTask != null)
     		weatherTask.cancel(true);
     }
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		longitude = savedInstanceState.getDouble("longitude");
+		latitude =  savedInstanceState.getDouble("latitude");
+
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putDouble("longitude", longitude);
+		outState.putDouble("latitude", latitude);
+		super.onSaveInstanceState(outState);
+	}
 }
