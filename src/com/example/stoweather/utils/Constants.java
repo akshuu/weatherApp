@@ -9,7 +9,7 @@ package com.example.stoweather.utils;
  *
  */
 public class Constants {
-	public static final int MIN_DISTANCE_FOR_GEO_UPDATES = 0; //Specified in meters	// 10Kms
+	public static final int MIN_DISTANCE_FOR_GEO_UPDATES = 10000; //Specified in meters	// 10Kms
 	public static final int MIN_TIME_FOR_GEO_UPDATES = 30*60*1000; //Specified in milliseconds
 	public static final String LOG_TAG = "StoWeather"; 
 	public static final int AREA_RADIUS_KM = 10;
