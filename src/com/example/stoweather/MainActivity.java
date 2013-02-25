@@ -82,10 +82,14 @@ public class MainActivity extends Activity {
     	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
     	int radius = Constants.AREA_RADIUS_KM;
     	if(prefs.contains(Constants.KEY_RADIUS_AREA_VALUE))
-    		{
+    	{
     		String sRadius = prefs.getString(Constants.KEY_RADIUS_AREA_VALUE, Constants.AREA_RADIUS_KM + "");
-    		radius = Integer.parseInt(sRadius);
+    		try{
+    			radius = Integer.parseInt(sRadius);
+    		}catch(Exception ex){
+    			radius =  Constants.AREA_RADIUS_KM;
     		}
+    	}
     	latitude = coords[0];
     	longitude = coords[1];
     	
