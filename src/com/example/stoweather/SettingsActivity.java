@@ -41,7 +41,7 @@ public class SettingsActivity extends PreferenceActivity
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
 		 if(Constants.KEY_RADIUS_AREA_VALUE.equals(key)){
-			 
+			 setResult(100);
 		 }
 	}
 }

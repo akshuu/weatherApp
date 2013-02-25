@@ -38,6 +38,9 @@ public class MainActivity extends Activity {
     private double latitude = 0d;
     private double longitude = 0d;
     
+    private static final int PREF_NO_CHANGE = 99;
+    private static final int PREF_CHANGED = 100;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,9 +160,16 @@ public class MainActivity extends Activity {
     private void updatePreferences() {
     	 Intent settingsActivity = new Intent(getBaseContext(),
                  SettingsActivity.class);
-         startActivity(settingsActivity);		
+         startActivityForResult(settingsActivity,PREF_NO_CHANGE);		
 	}
     
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	if(requestCode == PREF_NO_CHANGE && resultCode == PREF_CHANGED){
+    		refreshLocation();
+    	}
+    	super.onActivityResult(requestCode, resultCode, data);
+    }
     @Override
     protected void onResume() {
     	super.onResume();
